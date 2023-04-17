@@ -123,7 +123,7 @@ class NeuralMMAgent(object):
 
 #----#
 #Some quick test code
-
+"""
 test_agent = NeuralMMAgent(2, 2, 1, 1,random_seed=5, max_epoch=1000000, \
                             learning_rate=0.2, momentum=0)
 test_in = [[1,0],[0,0],[1,1],[0,1]]
@@ -132,4 +132,4 @@ test_agent.set_weights([[-.37,.26,.1,-.24],[-.01,-.05]])
 test_agent.set_biases([[0,0],[0,0],[0,0]])
 all_errors = test_agent.train_net(test_in, test_out, max_sse = test_agent.max_sse, \
                      max_num_epoch = test_agent.max_epoch)
-
+"""
