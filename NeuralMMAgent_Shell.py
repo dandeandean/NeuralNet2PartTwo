@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import time
 import copy
 
-
 class NeuralMMAgent(object):
     '''
     Class to for Neural Net Agents that compete in the Mob task
@@ -53,12 +52,25 @@ class NeuralMMAgent(object):
         self.activations = []
         self.net = []
         self.errors = []
-        self.bias = []
+        self.biases = [[]]
         self.bias_ds = []
                 
     ##################################################################################################
-    #DONE FUNCTIONS
-    ##################################################################################################
+    #ACCESSORS
+    def get_weights(self):
+        return (self.weights)
+
+    def set_weights(self, weights):
+        self.weights = weights
+
+    def get_biases(self):
+        return (self.biases)
+
+    def set_biases(self, biases):
+        self.bias = biases
+    
+    def set_thetas(self, thetas):
+        self.thetas = thetas
     @staticmethod
     def sigmoid_af(summed_input):
         #Sigmoid function
