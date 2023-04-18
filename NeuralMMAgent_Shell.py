@@ -47,13 +47,13 @@ class NeuralMMAgent(object):
         self.random_seed = random_seed
 
         #WE CAN SIMPLY FILL OUT THESE VALUES LATER AS WE CALCULATE THEM, BUT WE INIT HERE
-        self.weights = []
-        self.weight_ds = []
-        self.activations = []
-        self.net = []
-        self.errors = []
-        self.biases = [[]]
-        self.bias_ds = []
+        self.weights = self._construct_ligaments()
+        self.weight_ds = self._construct_ligaments()
+        
+        self.activations = self._construct_skeleton()
+        self.errors = self._construct_skeleton()
+        self.biases = self._construct_skeleton()
+        self.bias_ds = self._construct_skeleton()
                 
     ##################################################################################################
     #ACCESSORS
@@ -66,7 +66,7 @@ class NeuralMMAgent(object):
     def get_biases(self):
         return (self.biases)
 
-    def set_biases(self, biases):
+    def set_biases(self, bias):
         self.bias = biases
     
     def set_thetas(self, thetas):
@@ -84,12 +84,22 @@ class NeuralMMAgent(object):
         return sig_output * (1-sig_output)
 
     def matrixify_weigths(self,layer):
-        layer_in_question = weights[layer]
+        layer_in_question = self.weights[layer]
         cols = list()
         for i in range(len(layer_in_question)//self.num_hid_nodes):
             cols.append(self._get_incoming_weights(layer+1,i))
         return cols
     
+        
+    def _construct_skeleton(self):
+        #returns a 2d array that represents each node, inits to all zeros
+        #the middle layers
+        out=numpy.zeros((self.num_hid_layers,self.num_hid_nodes)).tolist()
+        #the first layer 
+        out.insert(0,[0.0] * self.num_in_nodes)
+        #the last layer
+        out.append([0.0] * self.num_out_nodes)
+        return out
     ##################################################################################################
     #FEED FORWARD
     def _feed_forward(self, input_list, row):
@@ -139,3 +149,13 @@ class NeuralMMAgent(object):
         return outgoing_weights
     ##################################################################################################
     
+    
+    def _construct_ligaments(self):
+        #returns a 2d array that represents the connections, inits to all zeros
+        #hidden nodes connections
+        out = numpy.zeros((self.num_hid_layers-1,self.num_hid_nodes**2)).tolist()
+        #input nodes to hidden nodes
+        out.insert(0,[0.0]*self.num_in_nodes*self.num_hid_nodes)
+        #last layer to output nodes connections
+        out.append([0.0]*self.num_hid_nodes*self.num_out_nodes)
+        return out
